@@ -64,7 +64,6 @@ describe('Receiver validator', () => {
 
         it('should throw error when receiver has not allowed pixKeyType', () => {
             let receiver = { ...dummyReceiver, pix_key_type: 'invalidPixKeyType', pix_key: faker.br.cpf() };
-            console.log('receiver', receiver);
             let receiverValidator = new ReceiverValidator(receiver);
             expect(() => receiverValidator.validate()).toThrow('Pix key type is not allowed');
         });
