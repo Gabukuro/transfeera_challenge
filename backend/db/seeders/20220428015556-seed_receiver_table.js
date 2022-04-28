@@ -9,7 +9,7 @@ const receivers = [...Array(30)].map((receiver) => {
     name: faker.name.findName(),
     email: faker.internet.email(),
     cpfCnpj: !shouldBeDraft ? cpf : null,
-    pixType: 'CPF',
+    pixKeyType: 'CPF',
     pixKey: cpf,
     status: !shouldBeDraft ? 'valid' : 'draft'
   };

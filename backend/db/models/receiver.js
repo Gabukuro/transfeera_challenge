@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     cpfCnpj: DataTypes.STRING,
     email: DataTypes.STRING,
     pixKey: DataTypes.STRING,
-    pixType: DataTypes.STRING,
+    pixKeyType: DataTypes.STRING,
     status: DataTypes.STRING,
   }, {
     sequelize,

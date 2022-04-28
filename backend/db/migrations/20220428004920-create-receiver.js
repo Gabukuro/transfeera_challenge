@@ -17,7 +17,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      pixType: {
+      pixKeyType: {
         type: Sequelize.STRING
       },
       pixKey: {
