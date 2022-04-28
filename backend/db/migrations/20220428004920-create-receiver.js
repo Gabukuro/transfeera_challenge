@@ -11,16 +11,16 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      cpfCnpj: {
+      cpf_cnpj: {
         type: Sequelize.STRING
       },
       email: {
         type: Sequelize.STRING
       },
-      pixKeyType: {
+      pix_key_type: {
         type: Sequelize.STRING
       },
-      pixKey: {
+      pix_key: {
         type: Sequelize.STRING
       },
       status: {

@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Receiver.init({
     name: DataTypes.STRING,
-    cpfCnpj: DataTypes.STRING,
+    cpf_cnpj: DataTypes.STRING,
     email: DataTypes.STRING,
-    pixKey: DataTypes.STRING,
-    pixKeyType: DataTypes.STRING,
+    pix_key: DataTypes.STRING,
+    pix_key_type: DataTypes.STRING,
     status: DataTypes.STRING,
   }, {
     sequelize,
