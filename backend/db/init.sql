@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS transfeera_dev;
+CREATE DATABASE IF NOT EXISTS transfeera_teste;
