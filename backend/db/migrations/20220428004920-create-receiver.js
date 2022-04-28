@@ -17,19 +17,14 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
+      pixType: {
+        type: Sequelize.STRING
+      },
       pixKey: {
         type: Sequelize.STRING
       },
       status: {
         type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
   },
