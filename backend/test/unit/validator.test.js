@@ -1,6 +1,5 @@
 const faker = require('faker-br');
 const ReceiverValidator = require('../../src/Domain/Receiver/Validator');
-const ReceiverParser = require('../../src/Domain/Receiver/Parser');
 
 const dummyReceiver = {
     name: faker.name.findName(),
