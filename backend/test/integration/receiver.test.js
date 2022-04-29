@@ -78,29 +78,38 @@ describe('receiver integration tests', () => {
     describe('update receiver tests', () => {
 
         it('should update a receiver successfully', async () => {
-            let receiver = { ...dummyReceiver, pix_key_type: pixKeys[0].key_type, pix_key: pixKeys[0].key };
+            const createdReceiver = await ReceiverModel.create({ ...dummyReceiver, pix_key_type: pixKeys[0].key_type, pix_key: pixKeys[0].key, status: 'valid' });
+            let updatedReceiver = { ...createdReceiver.dataValues, name: faker.name.findName(), email: null };
 
             const response = await request(app)
-                .post('/receiver')
-                .send(receiver)
-                .expect(201);
-
-            let createdReceiver = response.body;
-
-            let updatedReceiver = { ...createdReceiver, name: faker.name.findName(), cpf_cnpj: null };
-
-            const response2 = await request(app)
                 .put(`/receiver/${createdReceiver.id}`)
                 .send(updatedReceiver)
                 .expect(200);
 
-            let updatedBody = response2.body;
+            let updatedBody = response.body;
 
             expect(updatedBody.message).toEqual('Receiver updated successfully');
 
             let updatedReceiverData = await ReceiverModel.findByPk(createdReceiver.id);
             expect(updatedReceiverData.name).toEqual(updatedReceiver.name);
             expect(updatedReceiverData.status).toEqual('draft');
+        });
+
+        describe('should throw an error when try to update any other field than email', () => {
+            test.each(['name', 'cpf_cnpj', 'status'])('field: %s', async (field) => {
+                const createdReceiver = await ReceiverModel.create({ ...dummyReceiver, pix_key_type: pixKeys[0].key_type, pix_key: pixKeys[0].key, status: 'valid' });
+
+                let updatedReceiver = createdReceiver.dataValues;
+                updatedReceiver[field] = null;
+
+                const response = await request(app)
+                    .put(`/receiver/${createdReceiver.id}`)
+                    .send(updatedReceiver)
+                    .expect(400);
+
+                let err = response.error;
+                expect(err.text).toEqual(`Can't edit ${field} field`);
+            });
         });
     });
 });
