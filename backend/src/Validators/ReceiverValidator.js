@@ -4,15 +4,6 @@ const NiceExceptionHandler = require('../Helpers/NiceExceptionHandler');
 
 const ReceiverValidator = {};
 
-ReceiverValidator.validateUpdateReceiver = (oldReceiver, newReceiver) => {
-    let changeableFields = ['email'];
-    let fields = Object.keys(oldReceiver);
-    fields.forEach(field => {
-        if (!changeableFields.includes(field) && oldReceiver[field] !== newReceiver[field])
-            throw new NiceExceptionHandler(`Can't edit ${field} field`, 400);
-    })
-}
-
 ReceiverValidator.validate = (receiver) => {
     validateByScheme(receiver);
     customValidation(receiver);
@@ -33,7 +24,7 @@ const validateByScheme = (receiver) => {
             subFields.forEach(subField => {
                 let subRules = rules.when[subField];
                 validateField(receiver, field, subRules[receiver[subField]]);
-            })
+            });
         }
     });
 }
@@ -70,6 +61,16 @@ const customValidation = (receiver) => {
 
     if (receiver.pix_key_type === 'CNPJ' && !cnpj.isValid(receiver.pix_key))
         throw new NiceExceptionHandler(`PIX key is invalid`, 400);
+}
+
+ReceiverValidator.validateUpdateReceiver = (oldReceiver, newReceiver) => {
+    let changeableFields = ['email'];
+    let fields = Object.keys(oldReceiver);
+
+    fields.forEach(field => {
+        if (!changeableFields.includes(field) && oldReceiver[field] !== newReceiver[field])
+            throw new NiceExceptionHandler(`Can't edit ${field} field`, 400);
+    });
 }
 
 module.exports = ReceiverValidator; 
