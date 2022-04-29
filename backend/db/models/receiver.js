@@ -84,6 +84,7 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.STRING,
       allowNull: { args: false, msg: 'Status is required' },
+      defaultValue: 'draft',
       validate: {
         isIn: { args: [['valid', 'draft']], msg: 'Status not allowed' },
       }
