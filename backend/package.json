@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
+    "db:migrate": "sequelize db:migrate",
+    "pretest": "cross-env NODE_ENV=test npm run db:migrate",
     "test:unit": "jest test/unit --coverage",
     "test:integration": "jest test/integration"
   },
@@ -13,6 +15,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "cpf-cnpj-validator": "^1.0.3",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
     "express": "^4.18.0",
     "faker-br": "^0.4.1",

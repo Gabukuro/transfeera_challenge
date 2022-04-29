@@ -1,6 +1,7 @@
 const app = require('../../src/app');
 const request = require('supertest');
 const faker = require('faker-br');
+const models = require('../../db/models');
 
 const dummyReceiver = {
     name: faker.name.findName(),
@@ -16,6 +17,14 @@ const pixKeys = [
     { key_type: 'CHAVE_ALEATORIA', key: `a234567d-a12a-a12a-a12a-aa123456789a` },
 ]
 
+beforeAll(async () => {
+    await models.sequelize.sync({ force: true });
+});
+
+afterAll(async () => {
+    await models.sequelize.close();
+});
+
 describe('receiver integration tests', () => {
 
     describe('create receiver tests', () => {
@@ -26,6 +35,7 @@ describe('receiver integration tests', () => {
             const response = await request(app)
                 .post('/receiver')
                 .send(receiver)
+                .expect(201);
 
             let createdReceiver = response.body;
 
@@ -40,6 +50,7 @@ describe('receiver integration tests', () => {
             const response = await request(app)
                 .post('/receiver')
                 .send(receiver)
+                .expect(201);
 
             let createdReceiver = response.body;
 

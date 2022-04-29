@@ -9,4 +9,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+require('./Routes/index')(app);
+
 module.exports = app;
