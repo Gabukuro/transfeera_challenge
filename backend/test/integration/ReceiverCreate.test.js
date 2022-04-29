@@ -2,6 +2,8 @@ const app = require('../../src/app');
 const request = require('supertest');
 const faker = require('faker-br');
 
+require('../TestSetup');
+
 const dummyReceiver = {
     name: faker.name.findName(),
     email: faker.internet.email(),

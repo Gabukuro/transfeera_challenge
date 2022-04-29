@@ -4,14 +4,39 @@ const ReceiverModel = require('../../db/models').Receiver;
 
 const ReceiverTestSetup = {};
 
-ReceiverTestSetup.dummyReceiver = {
+ReceiverTestSetup.createDummyReceiver = async () => {
+    let dummyReceiver = {
         name: faker.name.findName(),
         email: faker.internet.email(),
         cpf_cnpj: faker.br.cpf(),
         pix_key_type: 'CPF',
         pix_key: faker.br.cpf(),
         status: 'valid'
+    };
+
+    let createdReceiver = await ReceiverModel.create(dummyReceiver);
+    return createdReceiver;
 };
+
+ReceiverTestSetup.createDummyReceivers = async (numberOfReceivers) => {
+    let receivers = [];
+
+    for (let i = 0; i < numberOfReceivers; i++) {
+        let receiver = {
+            name: faker.name.findName(),
+            email: faker.internet.email(),
+            cpf_cnpj: faker.br.cpf(),
+            pix_key_type: 'CPF',
+            pix_key: faker.br.cpf(),
+            status: Math.floor((Math.random() * 50) + 1) % 2 !== 0 ? 'valid' : 'draft'
+        };
+
+        receivers.push(receiver);
+    }
+
+    let createdReceivers = await ReceiverModel.bulkCreate(receivers);
+    return createdReceivers;
+}
 
 ReceiverTestSetup.pixKeys = [
     { key_type: 'CPF', key: faker.br.cpf() },

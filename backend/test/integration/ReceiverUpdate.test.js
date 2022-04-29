@@ -1,13 +1,16 @@
 const app = require('../../src/app');
 const request = require('supertest');
 
+require('../TestSetup');
+
 const ReceiverModel = require('../../db/models').Receiver;
 
 const ReceiverTestSetup = require('./ReceiverTestSetup');
+beforeEach(ReceiverTestSetup.createDummyReceiver);
 
 describe('update receiver tests', () => {
     it('should update a receiver successfully', async () => {
-        const dummyReceiver = await ReceiverModel.create(ReceiverTestSetup.dummyReceiver);
+        const dummyReceiver = await ReceiverModel.findByPk(1);
 
         let updatedReceiver = {
             ...dummyReceiver.dataValues,
@@ -15,7 +18,7 @@ describe('update receiver tests', () => {
         };
 
         const response = await request(app)
-            .put(`/receiver/${dummyReceiver.id}`)
+            .put(`/receiver/1`)
             .send(updatedReceiver)
             .expect(200);
 
@@ -23,20 +26,19 @@ describe('update receiver tests', () => {
 
         expect(updatedBody.message).toEqual('Receiver updated successfully');
 
-        let updatedReceiverData = await ReceiverModel.findByPk(dummyReceiver.id);
+        let updatedReceiverData = await ReceiverModel.findByPk(1);
         expect(updatedReceiverData.email).toEqual(updatedReceiver.email);
     });
 
     describe('should throw an error when try to update any other field than email', () => {
         test.each(['name', 'cpf_cnpj', 'status'])('field: %s', async (field) => {
-
-            const dummyReceiver = await ReceiverModel.create(ReceiverTestSetup.dummyReceiver);
+            const dummyReceiver = await ReceiverModel.findByPk(1);
 
             let updatedReceiver = dummyReceiver.dataValues;
             updatedReceiver[field] = null;
 
             const response = await request(app)
-                .put(`/receiver/${dummyReceiver.id}`)
+                .put(`/receiver/1`)
                 .send(updatedReceiver)
                 .expect(400);
 
@@ -46,7 +48,7 @@ describe('update receiver tests', () => {
 
         describe('should throw an error when edit all infos', () => {
             test.each(['', null, undefined])('value: %s', async (value) => {
-                const dummyReceiver = await ReceiverModel.create(ReceiverTestSetup.dummyReceiver);
+                const dummyReceiver = await ReceiverModel.findByPk(1);
 
                 let updatedReceiver = {
                     ...dummyReceiver.dataValues,
@@ -56,7 +58,7 @@ describe('update receiver tests', () => {
                 };
 
                 const response = await request(app)
-                    .put(`/receiver/${dummyReceiver.id}`)
+                    .put(`/receiver/1`)
                     .send(updatedReceiver)
                     .expect(400);
 
