@@ -58,5 +58,18 @@ describe('receiver integration tests', () => {
             keys.forEach(key => expect(createdReceiver[key]).toEqual(receiver[key]));
             expect(createdReceiver.status).toEqual('draft');
         });
+
+        it('should throw an error when receiver is invalid', async () => {
+
+            let receiver = { ...dummyReceiver, pix_key_type: pixKeys[0].key_type, pix_key: 'abublé' };
+
+            const response = await request(app)
+                .post('/receiver')
+                .send(receiver)
+                .expect(400);
+
+            let respondeBody = response.body;
+            expect(respondeBody.message).toEqual('Pix key is invalid');
+        })
     });
 });
