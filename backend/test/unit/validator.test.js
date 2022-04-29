@@ -1,5 +1,5 @@
 const faker = require('faker-br');
-const ReceiverValidator = require('../../src/Domain/Receiver/Validator');
+const ReceiverModel = require('../../db/models').Receiver;
 
 const dummyReceiver = {
     name: faker.name.findName(),
@@ -17,26 +17,7 @@ const pixKeys = [
 
 describe('Receiver validator', () => {
 
-    describe('when receiver is valid', () => {
-        pixKeys.forEach(pix => {
-            it(`should return true when receiver ${pix.key_type} is valid`, () => {
-                let receiver = { ...dummyReceiver, pix_key_type: pix.key_type, pix_key: pix.key };
-                let receiverValidator = new ReceiverValidator(receiver);
-                expect(receiverValidator.validate()).toBe(true);
-            });
-        });
-
-        it('should return true when receiver email is not defined', () => {
-            [null, undefined, ''].forEach(email => {
-                let receiver = { ...dummyReceiver, email: email, pix_key_type: 'CPF', pix_key: faker.br.cpf() };
-                let receiverValidator = new ReceiverValidator(receiver);
-                expect(receiverValidator.validate()).toBe(true);
-            });
-        });
-    });
-
     describe('when receiver is invalid', () => {
-
         let invalidPixKeys = [
             { key_type: 'CPF', key: '123.456.789-12' },
             { key_type: 'CNPJ', key: '22.222.222/2222-22' },
@@ -44,40 +25,54 @@ describe('Receiver validator', () => {
             { key_type: 'TELEFONE', key: '5511111111111' },
         ];
 
-        it(`should throw error when receiver has invalid pix key`, () => {
-            invalidPixKeys.forEach(pix => {
+        describe(`should throw error when receiver has invalid pix key`, () => {
+            test.each(invalidPixKeys)('invalid pik key: %s', async pix => {
                 let receiver = { ...dummyReceiver, pix_key_type: pix.key_type, pix_key: pix.key };
-                let receiverValidator = new ReceiverValidator(receiver);
-                expect(() => receiverValidator.validate()).toThrow(`Pix key is invalid`);
-            });
-        });
-
-        it(`should throw error when receiver has undefined pix key`, () => {
-            pixKeys.forEach(pix => {
-                [null, undefined, ''].forEach((pixKey) => {
-                    let receiver = { ...dummyReceiver, pix_key_type: pix.key_type, pix_key: pixKey };
-                    let receiverValidator = new ReceiverValidator(receiver);
-                    expect(() => receiverValidator.validate()).toThrow('Pix key is required');
+                let createdReceiver = ReceiverModel.create(receiver).catch(err => {
+                    let errors = err.errors;
+                    expect(errors[0].message).toBe('PIX key is invalid');
                 });
             });
         });
 
-        it('should throw error when receiver has not allowed pixKeyType', () => {
+        describe(`should throw error when receiver has undefined pix key`, () => {
+            test.each(pixKeys)('pix: %s', async pix => {
+                [null, undefined, ''].forEach(async pixKey => {
+                    let receiver = { ...dummyReceiver, pix_key_type: pix.key_type, pix_key: pixKey };
+                    let createdReceiver = await ReceiverModel.create(receiver).catch(err => {
+                        let errors = err.errors;
+                        expect(errors[0].message).toBe('PIX key is invalid');
+                    });
+                });
+            });
+        });
+
+        it('should throw error when receiver has not allowed pixKeyType', async () => {
             let receiver = { ...dummyReceiver, pix_key_type: 'invalidPixKeyType', pix_key: faker.br.cpf() };
-            let receiverValidator = new ReceiverValidator(receiver);
-            expect(() => receiverValidator.validate()).toThrow('Pix key type is not allowed');
+            let createdReceiver = await ReceiverModel.create(receiver).catch(err => {
+                let errors = err.errors;
+                expect(errors[0].message).toBe('PIX key type not allowed');
+
+            });
         });
 
-        it('should throw error when receiver pixKey is too long', () => {
+        it('should throw error when receiver pixKey is too long', async () => {
             let receiver = { ...dummyReceiver, pix_key_type: 'CHAVE_ALEATORIA', pix_key: 'x'.repeat(141) };
-            let receiverValidator = new ReceiverValidator(receiver);
-            expect(() => receiverValidator.validate()).toThrow('Pix key is too long');
+            let createdReceiver = await ReceiverModel.create(receiver).catch(err => {
+                let errors = err.errors;
+                expect(errors[0].message).toBe('PIX key is invalid');
+                expect(errors[1].message).toBe('PIX key is too long');
+
+            });
         });
 
-        it('should throw error when receiver email is too long', () => {
+        it('should throw error when receiver email is too long', async () => {
             let receiver = { ...dummyReceiver, pix_key_type: 'CPF', pix_key: faker.br.cpf(), email: 'x'.repeat(251) };
-            let receiverValidator = new ReceiverValidator(receiver);
-            expect(() => receiverValidator.validate()).toThrow('Email is too long');
+            let createdReceiver = await ReceiverModel.create(receiver).catch(err => {
+                let errors = err.errors;
+                expect(errors[0].message).toBe('Email is invalid');
+                expect(errors[1].message).toBe('Email is too long');
+            });
         });
     });
 });
