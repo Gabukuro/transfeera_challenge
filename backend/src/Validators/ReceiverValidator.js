@@ -34,7 +34,7 @@ const validateField = (receiver, field, rules) => {
         throw new NiceExceptionHandler(`${parseField(field)} is required`, 400);
 
     if (rules.allowedTypes && !rules.allowedTypes.includes(receiver[field]))
-        throw new NiceExceptionHandler(`${parseField(field)} is not allowed`, 400);
+        throw new NiceExceptionHandler(`${parseField(field)} not allowed`, 400);
 
     if (rules.maxLength && receiver[field] && receiver[field].length > rules.maxLength)
         throw new NiceExceptionHandler(`${parseField(field)} is too long`, 400);
@@ -66,11 +66,15 @@ const customValidation = (receiver) => {
 ReceiverValidator.validateUpdateReceiver = (oldReceiver, newReceiver) => {
     let changeableFields = ['email'];
     let fields = Object.keys(oldReceiver);
+    let wrongFields = [];
 
     fields.forEach(field => {
         if (!changeableFields.includes(field) && oldReceiver[field] !== newReceiver[field])
-            throw new NiceExceptionHandler(`Can't edit ${field} field`, 400);
+        wrongFields.push(field);
     });
+
+    if (wrongFields.length == 1) throw new NiceExceptionHandler(`Can't edit ${wrongFields[0]} field`, 400);
+    if (wrongFields.length > 1) throw new NiceExceptionHandler(`Can't edit ${wrongFields.join(', ')} fields`, 400);
 }
 
 module.exports = ReceiverValidator; 

@@ -9,7 +9,7 @@ ReceiverMiddleware.validator = (req, res, next) => {
         ReceiverValidator.validate(receiver);
         next();
     } catch (err) {
-        res.status(400).send(err.message);
+        res.status(err.code).send(err.message);
     }
 }
 
