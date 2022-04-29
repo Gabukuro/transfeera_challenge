@@ -43,22 +43,6 @@ describe('receiver integration tests', () => {
 
             let keys = Object.keys(receiver);
             keys.forEach(key => expect(createdReceiver[key]).toEqual(receiver[key]));
-            expect(createdReceiver.status).toEqual('valid');
-        });
-
-        it('should create a draft receiver', async () => {
-            let receiver = { ...dummyReceiver, cpf_cnpj: null, pix_key_type: pixKeys[0].key_type, pix_key: pixKeys[0].key };
-
-            const response = await request(app)
-                .post('/receiver')
-                .send(receiver)
-                .expect(201);
-
-            let createdReceiver = response.body;
-
-            let keys = Object.keys(receiver);
-            keys.forEach(key => expect(createdReceiver[key]).toEqual(receiver[key]));
-            expect(createdReceiver.status).toEqual('draft');
         });
 
         it('should throw an error when receiver is invalid', async () => {
@@ -71,7 +55,7 @@ describe('receiver integration tests', () => {
                 .expect(400);
 
             let err = response.error;
-            expect(err.text).toEqual('Pix key is invalid');
+            expect(err.text).toEqual('PIX key is invalid');
         });
     });
 
@@ -79,7 +63,7 @@ describe('receiver integration tests', () => {
 
         it('should update a receiver successfully', async () => {
             const createdReceiver = await ReceiverModel.create({ ...dummyReceiver, pix_key_type: pixKeys[0].key_type, pix_key: pixKeys[0].key, status: 'valid' });
-            let updatedReceiver = { ...createdReceiver.dataValues, name: faker.name.findName(), email: null };
+            let updatedReceiver = { ...createdReceiver.dataValues, email: null };
 
             const response = await request(app)
                 .put(`/receiver/${createdReceiver.id}`)
@@ -91,8 +75,7 @@ describe('receiver integration tests', () => {
             expect(updatedBody.message).toEqual('Receiver updated successfully');
 
             let updatedReceiverData = await ReceiverModel.findByPk(createdReceiver.id);
-            expect(updatedReceiverData.name).toEqual(updatedReceiver.name);
-            expect(updatedReceiverData.status).toEqual('draft');
+            expect(updatedReceiverData.email).toEqual(updatedReceiver.email);
         });
 
         describe('should throw an error when try to update any other field than email', () => {
