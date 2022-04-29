@@ -10,7 +10,7 @@ const dummyReceiver = {
 const pixKeys = [
     { key_type: 'CPF', key: faker.br.cpf() },
     { key_type: 'CNPJ', key: faker.br.cnpj() },
-    { key_type: 'EMAIL', key: faker.internet.email()},
+    { key_type: 'EMAIL', key: faker.internet.email() },
     { key_type: 'TELEFONE', key: `+5511999999999` },
     { key_type: 'CHAVE_ALEATORIA', key: `a234567d-a12a-a12a-a12a-aa123456789a` },
 ]
@@ -44,16 +44,16 @@ describe('Receiver validator', () => {
             { key_type: 'TELEFONE', key: '5511111111111' },
         ];
 
-        invalidPixKeys.forEach(pix => {
-            it(`should throw error when receiver has invalid ${pix.key_type} pixKey`, () => {
+        it(`should throw error when receiver has invalid pix key`, () => {
+            invalidPixKeys.forEach(pix => {
                 let receiver = { ...dummyReceiver, pix_key_type: pix.key_type, pix_key: pix.key };
                 let receiverValidator = new ReceiverValidator(receiver);
                 expect(() => receiverValidator.validate()).toThrow(`Pix key is invalid`);
             });
         });
 
-        pixKeys.forEach(pix => {
-            it(`should throw error when receiver has undefined ${pix.key_type} pixKey`, () => {
+        it(`should throw error when receiver has undefined pix key`, () => {
+            pixKeys.forEach(pix => {
                 [null, undefined, ''].forEach((pixKey) => {
                     let receiver = { ...dummyReceiver, pix_key_type: pix.key_type, pix_key: pixKey };
                     let receiverValidator = new ReceiverValidator(receiver);
@@ -68,13 +68,13 @@ describe('Receiver validator', () => {
             expect(() => receiverValidator.validate()).toThrow('Pix key type is not allowed');
         });
 
-        it('should throw error when receiver pixKey is to long', () => {
-            let receiver = { ...dummyReceiver, pix_key_type: 'CHAVE_ALEATORIA',  pix_key: 'x'.repeat(141) };
+        it('should throw error when receiver pixKey is too long', () => {
+            let receiver = { ...dummyReceiver, pix_key_type: 'CHAVE_ALEATORIA', pix_key: 'x'.repeat(141) };
             let receiverValidator = new ReceiverValidator(receiver);
             expect(() => receiverValidator.validate()).toThrow('Pix key is too long');
         });
 
-        it('should throw error when receiver email is to long', () => {
+        it('should throw error when receiver email is too long', () => {
             let receiver = { ...dummyReceiver, pix_key_type: 'CPF', pix_key: faker.br.cpf(), email: 'x'.repeat(251) };
             let receiverValidator = new ReceiverValidator(receiver);
             expect(() => receiverValidator.validate()).toThrow('Email is too long');
