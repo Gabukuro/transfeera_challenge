@@ -2,6 +2,7 @@ const app = require('../../src/app');
 const request = require('supertest');
 const faker = require('faker-br');
 const models = require('../../db/models');
+const { it } = require('faker-br/lib/locales');
 
 const dummyReceiver = {
     name: faker.name.findName(),
@@ -70,6 +71,32 @@ describe('receiver integration tests', () => {
 
             let err = response.error;
             expect(err.text).toEqual('Pix key is invalid');
-        })
+        });
+    });
+
+    describe('update receiver tests', () => {
+
+        it('should update a receiver successfully', async () => {
+            let receiver = { ...dummyReceiver, pix_key_type: pixKeys[0].key_type, pix_key: pixKeys[0].key };
+
+            const response = await request(app)
+                .post('/receiver')
+                .send(receiver)
+                .expect(201);
+
+            let createdReceiver = response.body;
+
+            let updatedReceiver = { ...createdReceiver, name: faker.name.findName(), cpf_cnpj: null };
+
+            const response2 = await request(app)
+                .put(`/receiver/${createdReceiver.id}`)
+                .send(updatedReceiver)
+                .expect(200);
+
+            let updatedReceiver2 = response2.body;
+
+            expect(updatedReceiver2.name).toEqual(updatedReceiver.name);
+            expect(updatedReceiver2.status).toEqual('draft');
+        });
     });
 });
