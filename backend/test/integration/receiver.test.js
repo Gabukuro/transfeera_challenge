@@ -2,7 +2,6 @@ const app = require('../../src/app');
 const request = require('supertest');
 const faker = require('faker-br');
 const models = require('../../db/models');
-const { it } = require('faker-br/lib/locales');
 
 const dummyReceiver = {
     name: faker.name.findName(),
