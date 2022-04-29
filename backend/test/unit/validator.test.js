@@ -1,4 +1,5 @@
 const faker = require('faker-br');
+const ReceiverValidator = require('../../src/Validators/ReceiverValidator');
 const ReceiverModel = require('../../db/models').Receiver;
 
 const dummyReceiver = {
@@ -32,6 +33,7 @@ describe('Receiver validator', () => {
                     let errors = err.errors;
                     expect(errors[0].message).toBe('PIX key is invalid');
                 });
+                expect(() => ReceiverValidator.validate(receiver)).toThrow('PIX key is invalid');
             });
         });
 
@@ -43,6 +45,7 @@ describe('Receiver validator', () => {
                         let errors = err.errors;
                         expect(errors[0].message).toBe('PIX key is invalid');
                     });
+                    expect(() => ReceiverValidator.validate(receiver)).toThrow('PIX key is invalid');
                 });
             });
         });
@@ -52,8 +55,8 @@ describe('Receiver validator', () => {
             let createdReceiver = await ReceiverModel.create(receiver).catch(err => {
                 let errors = err.errors;
                 expect(errors[0].message).toBe('PIX key type not allowed');
-
             });
+            expect(() => ReceiverValidator.validate(receiver)).toThrow('PIX key type not allowed');
         });
 
         it('should throw error when receiver pixKey is too long', async () => {
@@ -62,8 +65,8 @@ describe('Receiver validator', () => {
                 let errors = err.errors;
                 expect(errors[0].message).toBe('PIX key is invalid');
                 expect(errors[1].message).toBe('PIX key is too long');
-
             });
+            expect(() => ReceiverValidator.validate(receiver)).toThrow('PIX key is too long');
         });
 
         it('should throw error when receiver email is too long', async () => {
@@ -73,6 +76,7 @@ describe('Receiver validator', () => {
                 expect(errors[0].message).toBe('Email is invalid');
                 expect(errors[1].message).toBe('Email is too long');
             });
+            expect(() => ReceiverValidator.validate(receiver)).toThrow('Email is too long');
         });
     });
 });
