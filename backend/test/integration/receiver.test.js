@@ -68,8 +68,8 @@ describe('receiver integration tests', () => {
                 .send(receiver)
                 .expect(400);
 
-            let respondeBody = response.body;
-            expect(respondeBody.message).toEqual('Pix key is invalid');
+            let err = response.error;
+            expect(err.text).toEqual('Pix key is invalid');
         })
     });
 });
