@@ -1,24 +1,19 @@
 const ReceiverRepository = require('../Repositories/ReceiverRepository');
+const ReceiverValidator = require('../Validators/ReceiverValidator');
 
 let ReceiverService = {};
 
 ReceiverService.create = async(receiver) => {
-    let isDraft = checkIfReceiverIsDraft(receiver);
-    let status = isDraft ? 'draft' : 'valid';
-    receiver = {...receiver, status: status};
     return await ReceiverRepository.create(receiver);
 }
 
 ReceiverService.update = async(id, receiver) => {
-    let isDraft = checkIfReceiverIsDraft(receiver);
-    let status = isDraft ? 'draft' : 'valid';
-    receiver = {...receiver, status: status};
-    return await ReceiverRepository.update(id, receiver);
-}
+    let oldReceiver = await ReceiverRepository.findById(id);
 
-checkIfReceiverIsDraft = (receiver) => {
-    let isDraft = Object.values(receiver).some(x => !x);
-    return isDraft;
+    if(oldReceiver.status == 'valid')
+        ReceiverValidator.validateUpdateReceiver(oldReceiver.dataValues, receiver); 
+
+    return await ReceiverRepository.update(id, receiver);
 }
 
 module.exports = ReceiverService;

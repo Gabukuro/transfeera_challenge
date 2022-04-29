@@ -4,8 +4,12 @@ let ReceiverController = {};
 
 ReceiverController.create = async(req, res) => {
     let receiver = req.body;
-    let createdReceiver = await ReceiverService.create(receiver);
-    res.status(201).send(createdReceiver);
+    try {
+        let createdReceiver = await ReceiverService.create(receiver);
+        res.status(201).send(createdReceiver);
+    } catch (err) {
+        res.status(err.code ?? 500).send(err.message);
+    }
 }
 
 ReceiverController.update = async(req, res) => {
@@ -15,7 +19,7 @@ ReceiverController.update = async(req, res) => {
         await ReceiverService.update(id, receiver);
         res.status(200).send({'message': 'Receiver updated successfully'});
     } catch (err) {
-        res.status(500).send(err.message);
+        res.status(err.code ?? 500).send(err.message);
     }
 }
 
