@@ -3,6 +3,8 @@ const request = require('supertest');
 const faker = require('faker-br');
 const models = require('../../db/models');
 
+const ReceiverModel = require('../../db/models').Receiver;
+
 const dummyReceiver = {
     name: faker.name.findName(),
     email: faker.internet.email(),
@@ -92,10 +94,13 @@ describe('receiver integration tests', () => {
                 .send(updatedReceiver)
                 .expect(200);
 
-            let updatedReceiver2 = response2.body;
+            let updatedBody = response2.body;
 
-            expect(updatedReceiver2.name).toEqual(updatedReceiver.name);
-            expect(updatedReceiver2.status).toEqual('draft');
+            expect(updatedBody.message).toEqual('Receiver updated successfully');
+
+            let updatedReceiverData = await ReceiverModel.findByPk(createdReceiver.id);
+            expect(updatedReceiverData.name).toEqual(updatedReceiver.name);
+            expect(updatedReceiverData.status).toEqual('draft');
         });
     });
 });
