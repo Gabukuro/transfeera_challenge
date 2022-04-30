@@ -19,6 +19,7 @@ describe('paginate receivers test', () => {
             expect(body.data.length).toBeLessThanOrEqual(10);
             expect(body.currentPage).toBe(pageNumber);
             expect(body.totalPages).toBe(3);
+            expect(body.totalCount).toBe(30);
         });
     });
 
