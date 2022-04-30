@@ -26,15 +26,12 @@ describe('paginate receivers test', () => {
     describe('should filter receivers', () => {
         test.each([
             { key: 'pix_key', value: '82939397023' },
-            { key: 'pix_key', value: '+5511999999999' },
-            { key: 'pix_key', value: 'emaiu@email.com' },
-            { key: 'email', value: 'email2@email.com' },
             { key: 'name', value: 'Benjamin Kirby Tennyson' },
             { key: 'status', value: 'valid' }
         ])('filter: %s', async filter => {
 
             let receiversCount = Math.random() * 10;
-            for (let i = 0; i <= receiversCount; i++) {
+            for (let i = 0; i < receiversCount; i++) {
                 await ReceiverTestSetup.createDummyReceiver({ [filter.key] : `${filter.value}` });
             }
 
