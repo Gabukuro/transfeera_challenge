@@ -6,4 +6,5 @@ beforeEach(async () => {
 
 afterAll(async () => {
     await models.sequelize.close();
+    await new Promise(resolve => setTimeout(() => resolve(), 500));
 });
