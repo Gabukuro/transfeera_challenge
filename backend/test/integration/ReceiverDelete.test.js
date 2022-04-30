@@ -8,7 +8,7 @@ const ReceiverTestSetup = require('../../test/integration/ReceiverTestSetup');
 
 describe('delete receiver tests', () => {
 
-    it('shoul delete a receiver successfully', async () => {
+    it('should delete a receiver successfully', async () => {
         ReceiverTestSetup.createDummyReceiver();
 
         const response = await request(app)
