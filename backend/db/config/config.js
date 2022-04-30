@@ -21,5 +21,6 @@ module.exports = {
     "define": {
       timestamps: false
     },
+    "logging": false
   }
 }
