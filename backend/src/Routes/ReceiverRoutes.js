@@ -5,6 +5,8 @@ module.exports = (app) => {
     app.post('/receiver', ReceiverMiddleware.validator);
     app.post('/receiver', ReceiverController.create);
 
+    app.get('/receiver', ReceiverController.paginate);
+
     app.put('/receiver/:id', ReceiverMiddleware.validator);
     app.put('/receiver/:id', ReceiverController.update);
 

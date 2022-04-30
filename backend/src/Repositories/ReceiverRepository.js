@@ -3,19 +3,26 @@ const ReceiverModel = model.Receiver;
 
 let ReceiverRepository = {};
 
-ReceiverRepository.findById = async(id) => {
-    return await ReceiverModel.findByPk(id);
-}
-
-ReceiverRepository.create = async(receiver) => {
+ReceiverRepository.create = async (receiver) => {
     return await ReceiverModel.create(receiver);
 };
 
-ReceiverRepository.update = async(id, receiver) => {
+ReceiverRepository.findById = async (id) => {
+    return await ReceiverModel.findByPk(id);
+};
+
+ReceiverRepository.paginate = async (page, limit) => {
+    return await ReceiverModel.findAndCountAll({
+        limit: limit,
+        offset: (page - 1) * limit,
+    });
+};
+
+ReceiverRepository.update = async (id, receiver) => {
     return await ReceiverModel.update(receiver, { where: { id: id } });
 };
 
-ReceiverRepository.delete = async(id) => {
+ReceiverRepository.delete = async (id) => {
     return await ReceiverModel.destroy({ where: { id: id } });
 };
 
