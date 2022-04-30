@@ -5,7 +5,7 @@ const ReceiverRepository = require('../../src/Repositories/ReceiverRepository');
 require('../TestSetup');
 
 const ReceiverTestSetup = require('../../test/integration/ReceiverTestSetup');
-beforeEach(async() => await ReceiverTestSetup.createDummyReceivers(30));
+beforeEach(async () => await ReceiverTestSetup.createDummyReceivers(30));
 
 describe('paginate receivers test', () => {
     describe('should paginate receivers', () => {
@@ -32,14 +32,20 @@ describe('paginate receivers test', () => {
             { key: 'name', value: 'Benjamin Kirby Tennyson' },
             { key: 'status', value: 'valid' }
         ])('filter: %s', async filter => {
+
+            let receiversCount = Math.random() * 10;
+            for (let i = 0; i <= receiversCount; i++) {
+                await ReceiverTestSetup.createDummyReceiver({ [filter.key] : `${filter.value}` });
+            }
+
             const response = await request(app)
                 .get(`/receiver?page=1&limit=10&filter=${filter.value}`)
                 .expect(200);
 
             let body = response.body;
 
-            let receiversCount = await ReceiverRepository.filter(filter.value).count();
-            expect(body.data.length).toBeLessThanOrEqual(receiversCount);
+            expect(body.data.length).toBeLessThanOrEqual(10);
+            expect(body.totalCount).toBeGreaterThanOrEqual(receiversCount);
         });
     });
 });

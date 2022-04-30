@@ -4,13 +4,13 @@ const ReceiverModel = require('../../db/models').Receiver;
 
 const ReceiverTestSetup = {};
 
-ReceiverTestSetup.createDummyReceiver = async () => {
+ReceiverTestSetup.createDummyReceiver = async (fields) => {
     let dummyReceiver = {
-        name: faker.name.findName(),
-        email: faker.internet.email(),
-        cpf_cnpj: faker.br.cpf(),
+        name: fields.name ?? faker.name.findName(),
+        email: fields.email ?? faker.internet.email(),
+        cpf_cnpj: fields.cpf_cnpj ?? faker.br.cpf(),
         pix_key_type: 'CPF',
-        pix_key: faker.br.cpf(),
+        pix_key: fields.pix_key ?? faker.br.cpf(),
         status: 'valid'
     };
 
