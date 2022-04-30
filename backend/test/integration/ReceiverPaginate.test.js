@@ -5,7 +5,7 @@ const ReceiverRepository = require('../../src/Repositories/ReceiverRepository');
 require('../TestSetup');
 
 const ReceiverTestSetup = require('../../test/integration/ReceiverTestSetup');
-beforeAll(async () => ReceiverTestSetup.createDummyReceivers(30));
+beforeEach(async() => await ReceiverTestSetup.createDummyReceivers(30));
 
 describe('paginate receivers test', () => {
     describe('should paginate receivers', () => {
