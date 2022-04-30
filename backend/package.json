@@ -8,8 +8,7 @@
     "db:migrate": "sequelize db:migrate",
     "pretest": "cross-env NODE_ENV=test npm run db:migrate",
     "test:unit": "jest test/unit --coverage",
-    "test:integration": "jest test/integration --coverage --runInBand --detectOpenHandles",
-    "test:filter": "jest "
+    "test:integration": "jest test/integration --coverage --runInBand --forceExit"
   },
   "author": "bagriel",
   "license": "ISC",
