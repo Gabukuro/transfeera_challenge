@@ -4,7 +4,7 @@ const ReceiverModel = require('../../db/models').Receiver;
 
 const ReceiverTestSetup = {};
 
-ReceiverTestSetup.createDummyReceiver = async (fields) => {
+ReceiverTestSetup.createDummyReceiver = async (fields = {}) => {
     let dummyReceiver = {
         name: fields.name ?? faker.name.findName(),
         email: fields.email ?? faker.internet.email(),
