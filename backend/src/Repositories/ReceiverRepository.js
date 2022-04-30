@@ -15,4 +15,8 @@ ReceiverRepository.update = async(id, receiver) => {
     return await ReceiverModel.update(receiver, { where: { id: id } });
 };
 
+ReceiverRepository.delete = async(id) => {
+    return await ReceiverModel.destroy({ where: { id: id } });
+};
+
 module.exports = ReceiverRepository;

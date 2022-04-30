@@ -7,4 +7,7 @@ module.exports = (app) => {
 
     app.put('/receiver/:id', ReceiverMiddleware.validator);
     app.put('/receiver/:id', ReceiverController.update);
+
+    app.delete('/receiver/:id', ReceiverController.delete);
+    app.post('/receiver/delete-request', ReceiverController.bulkDelete);
 }
