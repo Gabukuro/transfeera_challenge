@@ -1,10 +1,10 @@
 const app = require('../../src/app');
 const request = require('supertest');
+const ReceiverRepository = require('../../src/Repositories/ReceiverRepository');
 
 require('../TestSetup');
 
 const ReceiverTestSetup = require('../../test/integration/ReceiverTestSetup');
-const { sequelize } = require('../../db/models');
 beforeAll(async () => ReceiverTestSetup.createDummyReceivers(30));
 
 describe('paginate receivers test', () => {
@@ -17,6 +17,8 @@ describe('paginate receivers test', () => {
             let body = response.body;
 
             expect(body.data.length).toBeLessThanOrEqual(10);
+            expect(body.currentPage).toBe(pageNumber);
+            expect(body.totalPages).toBe(3);
         });
     });
 
@@ -35,7 +37,7 @@ describe('paginate receivers test', () => {
 
             let body = response.body;
 
-            let receiversCount = await sequelize.quey(`SELECT COUNT(${filter.key}) FROM receivers WHERE ${filter.key} = '${filter.value}'`);
+            let receiversCount = await ReceiverRepository.filter(filter.value).count();
             expect(body.data.length).toBeLessThanOrEqual(receiversCount);
         });
     });
