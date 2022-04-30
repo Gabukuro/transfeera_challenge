@@ -8,9 +8,9 @@ const receivers = [...Array(30)].map((receiver) => {
   return {
     name: faker.name.findName(),
     email: faker.internet.email(),
-    cpfCnpj: !shouldBeDraft ? cpf : null,
-    pixKeyType: 'CPF',
-    pixKey: cpf,
+    cpf_cnpj: !shouldBeDraft ? cpf : null,
+    pix_key_type: 'CPF',
+    pix_key: cpf,
     status: !shouldBeDraft ? 'valid' : 'draft'
   };
 })
