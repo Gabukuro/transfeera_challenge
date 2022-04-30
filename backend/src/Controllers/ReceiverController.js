@@ -16,8 +16,9 @@ ReceiverController.create = async (req, res) => {
 ReceiverController.paginate = async (req, res) => {
     let page = parseInt(req.query.page);
     let limit = parseInt(req.query.limit);
+    let filter = req.query.filter;
     try {
-        let receiversPaginated = await ReceiverService.paginate(page, limit);
+        let receiversPaginated = await ReceiverService.paginate(page, limit, filter);
         res.status(200).send(receiversPaginated);
     } catch (err) {
         res.status(500).send(err.message);

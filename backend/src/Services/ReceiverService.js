@@ -7,8 +7,8 @@ ReceiverService.create = async (receiver) => {
     return await ReceiverRepository.create(receiver);
 }
 
-ReceiverService.paginate = async (page, limit) => {
-    let { count, rows } = await ReceiverRepository.paginate(page, limit);
+ReceiverService.paginate = async (page, limit, filter) => {
+    let { count, rows } = await ReceiverRepository.paginate(page, limit, filter);
     return {
         data: rows,
         totalCount: count,
