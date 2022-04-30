@@ -1,6 +1,5 @@
 const app = require('../../src/app');
 const request = require('supertest');
-const ReceiverRepository = require('../../src/Repositories/ReceiverRepository');
 
 require('../TestSetup');
 
