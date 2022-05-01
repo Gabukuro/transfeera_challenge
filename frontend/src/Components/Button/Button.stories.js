@@ -1,4 +1,4 @@
-const Button = require('.').default
+import Button from '.';
 
 export default {
     title: 'Button',
