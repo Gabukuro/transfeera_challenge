@@ -1,14 +1,19 @@
+import { useContext } from "react";
 import SearchInput from "../SearchInput";
 import StatusSelect from "../StatusSelect";
-import { StyledContainer, FilterTabContainer, AddButton } from "./style";
+import { StyledContainer, FilterTabContainer, AddButton, StyledH1 } from "./style";
+import { ReceiversContext } from '../../Context/ReceiverContext';
+
 
 function FilterTab() {
+
+    const { setShowModal } = useContext(ReceiversContext);
 
     return(
         <StyledContainer maxWidth={false}>
             <FilterTabContainer className="filter-tab">
-                <h1>Seus recebedores</h1>
-                <AddButton className="filter-tab__item"/>
+                <StyledH1>Seus recebedores</StyledH1>
+                <AddButton className="filter-tab__item" onClick={() => setShowModal(true)}/>
                 <StatusSelect className="filter-tab__item" />
                 <SearchInput className="filter-tab__item" />
             </FilterTabContainer>

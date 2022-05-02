@@ -7,6 +7,10 @@ export const StyledContainer = styled(Container)({
     marginBottom: 40,
 });
 
+export const StyledH1 = styled('h1')({
+    fontWeight: '300'
+});
+
 export const FilterTabContainer = styled(Container)({
     padding: '40px 20px',
     display: 'flex',
@@ -17,8 +21,6 @@ export const FilterTabContainer = styled(Container)({
         marginLeft: 'auto'
     }
 });
-
-
 
 export const AddButton = styled(Add)({
     color: '#FFF',

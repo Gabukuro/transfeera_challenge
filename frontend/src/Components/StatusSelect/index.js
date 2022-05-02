@@ -12,6 +12,7 @@ function StatusSelect(props) {
         { 'value': 'all', 'label': 'Todos os status' },
         { 'value': 'valid', 'label': 'Válido' },
         { 'value': 'draft', 'label': 'Rascunho' },
+        { 'value': 'invalid', 'label': 'Inválido' },
     ]
 
     const handleChange = (value) => {

@@ -1,9 +1,10 @@
 import { useContext, useEffect } from 'react';
 import { Container } from '@mui/material';
-import Button from '../../Components/Button';
 import FilterTab from '../../Components/FilterTab';
 import ReceiversTable from '../../Components/ReceiversTable';
 import { ReceiversProvider, ReceiversContext } from '../../Context/ReceiverContext';
+import ReceiverModal from '../../Components/ReceiverModal';
+import Notification from '../../Components/Notification';
 
 function ReceiversPage() {
 
@@ -17,9 +18,11 @@ function ReceiversPage() {
         <ReceiversProvider>
             <FilterTab />
             <Container>
-                <Button type="delete">Excluir recebedor</Button>
                 <ReceiversTable />
             </Container>
+
+            <ReceiverModal />
+            <Notification />
         </ReceiversProvider>
     )
 

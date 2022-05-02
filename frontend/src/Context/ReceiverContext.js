@@ -1,5 +1,6 @@
-import React, { createContext, useEffect } from 'react';
+import React, { createContext, useEffect, useContext } from 'react';
 import axiosHelper from '../Helpers/AxiosHelper';
+import { NotificationContext } from './NotificationContext';
 
 export const ReceiversContext = createContext({
     receivers: [],
@@ -14,10 +15,19 @@ export const ReceiversContext = createContext({
     setFilter: () => { },
     filterStatus: '',
     setFilterStatus: () => { },
+    showModal: false,
+    receiversSelected: [],
+    setReceiversSelected: () => { },
+    currentReceiver: {},
+    setCurrentReceiver: () => { },
+    setShowModal: () => { },
     getReceivers: () => { },
+    createReceiver: () => { },
     deleteReceiver: () => { },
+    requestDeleteReceiver: () => { },
     updateReceiver: () => { },
     deleteRequest: () => { },
+    notify: () => {},
 });
 
 export const ReceiversProvider = ({ children }) => {
@@ -28,9 +38,15 @@ export const ReceiversProvider = ({ children }) => {
     const [filterStatus, setFilterStatus] = React.useState('');
     const [totalCount, setTotalCount] = React.useState(0);
     const [totalPages, setTotalPages] = React.useState(0);
+    const [showModal, setShowModal] = React.useState(false);
+    const [receiversSelected, setReceiversSelected] = React.useState([]);
+    const [currentReceiver, setCurrentReceiver] = React.useState({});
+
+    const { notify } = useContext(NotificationContext);
 
     useEffect(() => {
         getReceivers();
+        setReceiversSelected([])
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, filter, filterStatus]);
 
@@ -44,6 +60,18 @@ export const ReceiversProvider = ({ children }) => {
             })
             .catch(error => {
                 console.log(error);
+                notify('Erro ao consultar recebedores', 'error');
+            });
+    }
+
+    const createReceiver = async (receiver) => {
+        axiosHelper.post('receiver', receiver)
+            .then(response => {
+                getReceivers();
+                notify('Recebdor criado com sucesso!', 'success');
+            })
+            .catch(error => {
+                notify('Ocorreu um erro ao criar recebedor', 'error');
             });
     }
 
@@ -51,19 +79,21 @@ export const ReceiversProvider = ({ children }) => {
         axiosHelper.delete(`receiver/${id}`)
             .then(response => {
                 getReceivers();
+                notify('Recebedor excluído com sucesso!', 'success');
             })
             .catch(error => {
-                console.log(error);
+                notify('Ocorreu um erro ao excluir recebedor', 'error');
             });
     }
 
-    const deleteRequest = async (ids) => {
-        axiosHelper.post(`receiver/delete-request`, { ids })
+    const requestDeleteReceiver = async (ids) => {
+        axiosHelper.post(`receiver/delete-request`, ids)
             .then(response => {
                 getReceivers();
+                notify('Recebedores excluídos com sucesso!', 'success');
             })
             .catch(error => {
-                console.log(error);
+                notify('Erro ao excluir recebedores', 'error');
             });
     }
 
@@ -71,9 +101,10 @@ export const ReceiversProvider = ({ children }) => {
         axiosHelper.put(`receiver/${id}`, data)
             .then(response => {
                 getReceivers();
+                notify('Recebedor atualizado com sucesso!', 'success');
             })
             .catch(error => {
-                console.log(error);
+                notify('Ocorreu um erro ao atualizar o recebedor', 'error');
             });
     }
 
@@ -93,9 +124,16 @@ export const ReceiversProvider = ({ children }) => {
                 filterStatus,
                 setFilterStatus,
                 getReceivers,
+                createReceiver,
                 deleteReceiver,
                 updateReceiver,
-                deleteRequest
+                requestDeleteReceiver,
+                showModal,
+                setShowModal,
+                receiversSelected,
+                setReceiversSelected,
+                currentReceiver,
+                setCurrentReceiver,
             }}>
             {children}
         </ReceiversContext.Provider>

@@ -12,6 +12,7 @@ function Component(props) {
         <StyledButton 
             variant={variantTypes[props.type]}
             className={props.type}
+            onClick={props.onClick}
         >{props.children}</StyledButton>
     );
 }
