@@ -4,6 +4,7 @@ import { Add } from "@mui/icons-material";
 
 export const StyledContainer = styled(Container)({
     backgroundColor: '#CDD6DE',
+    marginBottom: 40,
 });
 
 export const FilterTabContainer = styled(Container)({

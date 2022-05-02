@@ -4,6 +4,7 @@ const { Button } = require('@mui/material');
 export const StyledButton = styled(Button)({
     minWidth: 160,
     padding: '16px 0',
+    textTransform: 'capitalize',
     '&.delete': {
         backgroundColor: '#FF003A',
     },

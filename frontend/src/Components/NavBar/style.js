@@ -6,6 +6,7 @@ export const StyledContainer = styled(Container)({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding: '48px 0px',
 });
 
 export const NavItem = styled('div')({
@@ -19,7 +20,7 @@ export const NavLinks = styled('ul')({
     alignItems: 'center',
 });
 
-export const NavLink = styled(Link)({
+export const NavLink = styled('span')({
     color: '#72818D',
     textDecoration: 'inherit',
     cursor: 'pointer',

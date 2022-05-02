@@ -1,4 +1,4 @@
-const NavBar = require('.').default
+import NavBar from '.';
 
 export default {
     title: 'NavBar',

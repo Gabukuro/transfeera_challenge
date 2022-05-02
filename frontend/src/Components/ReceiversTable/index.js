@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { Table, TableCell, TableHead, TableBody, TableRow, TablePagination } from '@mui/material';
+import { useContext } from 'react';
+import { TableCell, TableHead, TableBody, TableRow, TablePagination } from '@mui/material';
+import { StyledTable } from './style';
 import StatusInfo from '../StatusInfo';
+import { ReceiversContext } from '../../Context/ReceiverContext';
 
-function ReceiversTable(props) {
+function ReceiversTable() {
 
-    const [page, setPage] = useState(props.currentPage);
-    const [rowsPerPage, setRowsPerPage] = useState(props.rowsPerPage);
-    const [data] = useState(props.data);
+    const { receivers, page, setPage, totalCount } = useContext(ReceiversContext)
 
     const columns = [
         { field: 'name', headerName: 'Recebdor' },
@@ -15,46 +15,36 @@ function ReceiversTable(props) {
         { field: 'status', headerName: 'Status' }
     ];
 
-    const handlePageChange = (event, page) => {
-        event.preventDefault();
-        setPage(page);
-    }
-
-    const handleChangeRowsPerPage = (event) => {
-        event.preventDefault();
-        setRowsPerPage(event.target.value);
-    }
-
     return (
-        <>
-            <Table>
-                <TableHead>
-                    <TableRow>
+        <StyledTable>
+            <TableHead>
+                <TableRow>
+                    {columns.map((column, index) => (
+                        <TableCell key={index}>{column.headerName}</TableCell>
+                    ))}
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {receivers && receivers.map((row, index) => (
+                    <TableRow key={index}>
                         {columns.map((column, index) => (
-                            <TableCell key={index}>{column.headerName}</TableCell>
+                            <TableCell key={index}>
+                                {column.field === 'status' ? <StatusInfo status={row[column.field]} /> : row[column.field]}
+                            </TableCell>
                         ))}
                     </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map((row, index) => (
-                        <TableRow key={index}>
-                            {columns.map((column, index) => (
-                                <TableCell key={index}>
-                                    {column.field === 'status' ? <StatusInfo status={row[column.field]} /> : row[column.field]}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))}
-                </TableBody>
-                <TablePagination
-                    count={props.totalPages}
-                    page={page}
-                    onPageChange={handlePageChange}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Table>
-        </>
+                ))}
+                <TableRow>
+                    <TablePagination
+                        page={page - 1}
+                        count={totalCount}
+                        rowsPerPage={10}
+                        onPageChange={(event, page) => setPage(page + 1)}
+                        rowsPerPageOptions={[]}
+                    />
+                </TableRow>
+            </TableBody>
+        </StyledTable>
     )
 }
 
