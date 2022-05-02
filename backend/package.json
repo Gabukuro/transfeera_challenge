@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "db:migrate": "sequelize db:migrate",
+    "db:seed": "sequelize db:seed:all",
     "pretest": "cross-env NODE_ENV=test npm run db:migrate",
     "test:unit": "jest test/unit --coverage",
     "test:integration": "jest test/integration --coverage --runInBand --forceExit"
