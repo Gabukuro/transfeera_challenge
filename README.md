@@ -29,7 +29,7 @@ $ cd frontend/
 $ npm i
 ```
 
-## 🚀 Iniciando o projeto
+## ☕ Iniciando o projeto
 
 ### Servidor
 - <strong>Docker:</strong> <br>
