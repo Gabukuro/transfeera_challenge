@@ -26,7 +26,6 @@ describe('paginate receivers test', () => {
         test.each([
             { key: 'pix_key', value: '82939397023' },
             { key: 'name', value: 'Benjamin Kirby Tennyson' },
-            { key: 'status', value: 'valid' }
         ])('filter: %s', async filter => {
 
             let receiversCount = Math.random() * 10;

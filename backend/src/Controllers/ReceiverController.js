@@ -14,11 +14,13 @@ ReceiverController.create = async (req, res) => {
 }
 
 ReceiverController.paginate = async (req, res) => {
-    let page = parseInt(req.query.page);
-    let limit = parseInt(req.query.limit);
+    let page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
     let filter = req.query.filter;
+    let status = req.query.status;
+
     try {
-        let receiversPaginated = await ReceiverService.paginate(page, limit, filter);
+        let receiversPaginated = await ReceiverService.paginate(page, limit, filter, status);
         res.status(200).send(receiversPaginated);
     } catch (err) {
         res.status(500).send(err.message);
