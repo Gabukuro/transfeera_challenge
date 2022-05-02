@@ -26,8 +26,9 @@ $ npm i
 Instale as dependências do frontend
 ```
 $ cd frontend/
-$ npm i
+$ npm i --force
 ```
+obs: o comando `--force` é preciso pois a versão atual do storybook possui um bug, fazendo quebrar a instalação normal.
 
 ## ☕ Iniciando o projeto
 
