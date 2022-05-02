@@ -8,6 +8,7 @@
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
     "pretest": "cross-env NODE_ENV=test npm run db:migrate",
+    "prepare": "npm run db:migrate && npm run db:seed",
     "test:unit": "jest test/unit --coverage",
     "test:integration": "jest test/integration --coverage --runInBand --forceExit"
   },

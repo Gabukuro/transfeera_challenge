@@ -43,11 +43,10 @@ function ReceiversTable() {
     }
 
     const handleDelete = () => {
-        console.log(receiversSelected);
         if (receiversSelected.length === 0)
             return notify('Selecione pelo menos um recebedor para excluir.', 'info');
 
-        if (receivers.length === 1) {
+        if (receiversSelected.length === 1) {
             deleteReceiver(receiversSelected[0]);
         } else {
             requestDeleteReceiver(receiversSelected);
