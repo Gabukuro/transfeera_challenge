@@ -79,6 +79,7 @@ export const ReceiversProvider = ({ children }) => {
         axiosHelper.delete(`receiver/${id}`)
             .then(response => {
                 getReceivers();
+                setReceiversSelected([])
                 notify('Recebedor excluído com sucesso!', 'success');
             })
             .catch(error => {
@@ -90,6 +91,7 @@ export const ReceiversProvider = ({ children }) => {
         axiosHelper.post(`receiver/delete-request`, ids)
             .then(response => {
                 getReceivers();
+                setReceiversSelected([])
                 notify('Recebedores excluídos com sucesso!', 'success');
             })
             .catch(error => {
